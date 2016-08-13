@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+  <plugin-info>
+    <description>${project.description}</description>
+    <version>${project.version}</version>
+    <vendor name="Eason M.Yang" url=""/>
+    <param name="plugin-icon">images/pluginIcon.png</param>
+    <param name="plugin-logo">images/pluginLogo.png</param>
+  </plugin-info>
+  <!-- add our i18n resource -->
+  <resource type="i18n" name="i18n" location="issue-link-matrix-gadget"/>
+  <!-- add our web resources -->
+  <web-resource key="issue-link-matrix-gadget-resources" name="issue-link-matrix-gadget Web Resource">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="issue-link-matrix-gadget.css" location="/css/issue-link-matrix-gadget.css"/>
+    <resource type="download" name="issue-link-matrix-gadget.js" location="/js/issue-link-matrix-gadget.js"/>
+    <resource type="download" name="i18n/messages.xml" location="i18n/messages.xml">
+      <param name="content-type" value="text/xml; charset=UTF-8"/>
+    </resource>
+    <context>issue-link-matrix-gadget</context>
+  </web-resource>
+  <web-resource key="issue-link-matrix-gadget-images" name="issue-link-matrix-gadget Web Resource">
+    <dependency>com.atlassian.auiplugin:ajs</dependency>
+    <resource type="download" name="images/" location="/images"/>
+    <context>atl.general</context>
+  </web-resource>
+  <!-- import from the product container -->
+  <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
+  <gadget name="Issue Link Matrix" key="issue-link-matrix-gadget" location="gadgets/issue-link-matrix-gadget/gadget.xml">
+    <description>Issue Link Matrix</description>
+  </gadget>
+</atlassian-plugin>

@@ -1,0 +1,12 @@
+<messagebundle>
+
+	<msg name="issue-link-matrix-gadget.name">Issue Link Matrix</msg>
+	<msg name="issue-link-matrix-gadget.title">Issue Link Matrix</msg>
+	<msg name="issue-link-matrix-gadget.description">This gadget builds the issue link matrix for given filter, with selected issue link type and condition. Clicking on red/green cells will show you to the resolved/unresolved tasks.</msg>
+	<msg name="issue-link-matrix-gadget.url">https:www.google.com</msg>
+	<msg name="issue-link-matrix-gadget.column-headers">Column Headers</msg>
+	<msg name="issue-link-matrix-gadget.row-headers">Row Headers</msg>
+	<msg name="issue-link-matrix-gadget.linktype">Link Type</msg>
+	<msg name="issue-link-matrix-gadget.linkcondition">Link Type Condition</msg>
+</messagebundle>
+

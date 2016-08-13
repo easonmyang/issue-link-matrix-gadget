@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="__MSG_issue-link-matrix-gadget.title__"
+                 title_url="__MSG_issue-link-matrix-gadget.url__"
+                 directory_title="__MSG_issue-link-matrix-gadget.name__"
+                 description="__MSG_issue-link-matrix-gadget.description__"
+                 author="Eason M. Yang"
+                 author_email="easonmy@gmail.com"      
+                 screenshot='__ATLASSIAN_BASE_URL__/download/resources/com.easonmyang.jira.gadget.issue-link-matrix-gadget:issue-link-matrix-gadget-images/images/gadget-screenshot2.png'
+                 thumbnail='__ATLASSIAN_BASE_URL__/download/resources/com.easonmyang.jira.gadget.issue-link-matrix-gadget:issue-link-matrix-gadget-images/images/gadget-screenshot2.png'
+                 >
+        <Optional feature="gadget-directory">
+            <Param name="categories">
+                Other
+            </Param>
+        </Optional>
+        <Optional feature="atlassian.util" />
+        <Require feature="setprefs"/>
+        <Require feature="dynamic-height" />
+        <Require feature="settitle"/>
+        <Require feature="views"/><!-- using views, atlassian specific-->
+        #supportedLocales("gadget.common")
+        <Locale messages="__ATLASSIAN_BASE_URL__/download/resources/com.easonmyang.jira.gadget.issue-link-matrix-gadget:issue-link-matrix-gadget-resources/i18n/messages.xml"/>
+    </ModulePrefs>
+    
+	<UserPref name="isConfigured" datatype="hidden" default_value="false"/>
+	<UserPref name="refresh" datatype="hidden" default_value="false"/>
+	<UserPref name="filterId" datatype="hidden"/>
+	<UserPref name="isPopup" datatype="hidden" default_value="false"/>
+	<UserPref name="linkType" datatype="hidden" />
+	<UserPref name="column-headers-pref" datatype="hidden" />
+    <UserPref name="row-headers-pref" datatype="hidden" />
+    <UserPref name="link-condition-pref" datatype="hidden" />
+    
+    <Content type="html" view="profile,canvas">     
+        <![CDATA[  
+        #requireResource("com.atlassian.jira.gadgets:common")
+        #requireResource("com.atlassian.jira.gadgets:jira-global")
+        #requireResource("com.atlassian.gadgets.publisher:ajs-gadgets")
+        #requireResource("jira.webresources:autocomplete") 
+        #requireResource("com.easonmyang.jira.gadget.issue-link-matrix-gadget:issue-link-matrix-gadget-resources")
+  		#includeResources()
+ 		<script type="text/javascript">          
+		(function () {
+		    var gadget = AJS.Gadget({
+		        baseUrl: "__ATLASSIAN_BASE_URL__",
+				config: 
+				{
+                        descriptor: function (args) 
+                        {
+                            var gadget = this;
+                            var searchParam;
+                            if (/^jql-/.test(this.getPref("filterId")) || this.getPref("isPopup") === "true") 
+                            {
+                                searchParam = 
+                                {
+                                    userpref: "filterId",
+                                    type: "hidden",
+                                    value: gadgets.util.unescapeString(gadget.getPref("filterId"))
+                                };
+                            } 
+                            else 
+                            {
+                                searchParam = AJS.gadget.fields.filterPicker(gadget, "filterId");
+                            }
+                            
+                            var columnHeaders_id="column-headers",
+                            	rowHeaders_id="row-headers",
+                            	rowHeadersField = buildHeaderConfigField(rowHeaders_id,gadget,args.allFields),
+                            	columnHeaderField = buildHeaderConfigField(columnHeaders_id,gadget,args.allFields),
+                            	linkTypeField = getIssueLinkTypesField(args.issueLinkType.issueLinkTypes,gadget)
+                            	linkConditionField = getLinkConditionField(gadget);
+                            	
+                            return {
+                                fields: 
+                                [
+                                searchParam,
+                                columnHeaderField,
+							    rowHeadersField,
+                                linkTypeField,
+                                linkConditionField,
+                                AJS.gadget.fields.nowConfigured()
+                                ]
+                            };
+                        },
+	                    args:[
+					    		{
+					    			key: "issueLinkType",
+					    			ajaxOptions:function()
+					    			{
+				    					var ob = { 
+						    					contentType:'application/json', 
+						    					url:'/rest/api/latest/issueLinkType'
+						    					};
+				    					return ob;		
+					    			}
+					    		},
+					    		{
+					    			key: "allFields",
+					    			ajaxOptions:function()
+					    			{
+				    					var ob = { 
+						    					contentType:'application/json', 
+						    					url:'/rest/api/latest/field'
+						    					};
+				    					return ob;		
+					    			}
+					    		}
+					    ]
+                },
+		        view: 
+		        {
+					enableReload: true,
+	                onResizeAdjustHeight: true,
+	                onResizeReload: false,
+					template: function(args) 
+					{
+						var gadget = this;
+						
+				 		var filterId = gadget.getPref("filterId"),
+				 			columnHeaders = gadget.getPref("column-headers-pref"),
+				 			rowHeaders = gadget.getPref("row-headers-pref"),
+				 			linkType = gadget.getPref('linkType'),
+				 			linkCondition = gadget.getPref('link-condition-pref');
+				 			
+				 			
+					 		if(filterId.indexOf("-") > -1)
+					 		{
+					 		filterId=filterId.split('-')[1];
+					 		}
+							buildMatrix(columnHeaders,rowHeaders,linkType,linkCondition,filterId,gadget);
+					},
+				    args:[]
+				}//view
+		    });
+		})();
+	    </script>
+  		]]>
+    </Content>
+</Module>

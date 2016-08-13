@@ -1,0 +1,82 @@
+
+.link-maxtrix-vertical-text {
+	display: inline-block;
+	overflow: hidden;
+	width: 1.5em;
+}
+.link-maxtrix-vertical-text-inner {
+	display: inline-block;
+	white-space: nowrap;
+	line-height: 1.5;
+	transform: translate(0,100%) rotate(-90deg);
+	transform-origin: 0 0;
+}
+
+.link-maxtrix-vertical-text-inner:after {
+	content: "";
+	display: block;
+	margin: -1.5em 0 100%;
+}
+
+td.covered
+{
+	background-color:#00FF34;
+}
+
+td.not-covered
+{
+	background-color:red;
+}
+
+td.not-applicable
+{
+	background-color:grey;
+}
+
+.link-maxtrix-active-node:hover
+{
+	background-color: #66FFFF;
+	cursor:pointer;
+}
+
+#issue-link-matrix-table{
+
+	border-collapse: collapse;
+}
+
+#issue-link-matrix-table th,td {
+	border: 1px solid;
+	/*text-align:center;*/
+	font-weight: normal;
+	padding: 0.5em;
+	white-space:nowrap;
+}
+
+#issue-link-matrix-table td.row-headers {
+	text-align:center;
+}
+
+#issue-link-matrix-table th.column-headers{
+	text-align:center;
+}
+
+#issue-link-matrix-table td.table-row-headers
+{
+	background-color: #FFCC99;
+}
+
+#issue-link-matrix-table th.table-column-header
+{
+	background-color: #FFCC99;
+}
+
+#issue-link-matrix-table th.link-type-header
+{
+	background-color: #99CCFF;
+	border: 1px solid;
+	text-align:center;
+	font-weight: normal;
+	padding: 0.5em;
+}
+
+
